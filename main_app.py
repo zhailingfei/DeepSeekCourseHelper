@@ -13,7 +13,7 @@ from config import SYSTEM_PROMPT, API_URL, API_KEY, HEADERS, MINDMAP_SCHEMA
 from vectorstore_setup import load_vectorstore
 
 retriever = load_vectorstore()
-from utils import load_history, save_history
+from utils import load_history, save_history,contains_sensitive_words
 from jsonschema import validate
 
 class KnowledgeApp:
@@ -98,6 +98,8 @@ class KnowledgeApp:
             return
 
         combined_prompt = f"用户输入内容：\n{prompt}\n\n"
+        if contains_sensitive_words(combined_prompt):
+            return
         if ocr:
             combined_prompt += f"【图片OCR内容】：\n{ocr}"
 
